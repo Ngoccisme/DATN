@@ -473,8 +473,8 @@ export default function GuestInfo() {
         booking_type: "overnight",
         check_in_date: booking.checkIn,
         check_out_date: booking.checkOut,
-        payment_mode: "deposit",
-        prepaid_amount: 0,
+        payment_mode: payMode === "full" ? "full" : "deposit",
+        prepaid_amount: payMode === "full" ? discountedTotal : 0,
         discount_code: String(discountCode || "").trim().toUpperCase(),
       };
 

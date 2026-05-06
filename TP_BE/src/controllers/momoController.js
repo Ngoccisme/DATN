@@ -290,10 +290,11 @@ class MoMoController {
 
     const { orderId, resultCode, message, transId } = req.query;
 
+    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5174";
     try {
       if (!orderId) {
         return res.redirect(
-          `${process.env.FRONTEND_URL}/payment-failed?message=Thiếu orderId&resultCode=${encodeURIComponent(
+          `${frontendUrl}/payment-failed?message=Thiếu orderId&resultCode=${encodeURIComponent(
             String(resultCode ?? ""),
           )}`,
         );
@@ -303,7 +304,7 @@ class MoMoController {
       const bookingId = idMatch?.[1];
       if (!bookingId) {
         return res.redirect(
-          `${process.env.FRONTEND_URL}/payment-failed?message=orderId không hợp lệ&resultCode=${encodeURIComponent(
+          `${frontendUrl}/payment-failed?message=orderId không hợp lệ&resultCode=${encodeURIComponent(
             String(resultCode ?? ""),
           )}`,
         );
@@ -313,7 +314,7 @@ class MoMoController {
 
       if (!booking) {
         return res.redirect(
-          `${process.env.FRONTEND_URL}/payment-failed?message=Không tìm thấy booking&resultCode=${encodeURIComponent(
+          `${frontendUrl}/payment-failed?message=Không tìm thấy booking&resultCode=${encodeURIComponent(
             String(resultCode ?? ""),
           )}`,
         );
@@ -382,7 +383,7 @@ class MoMoController {
 
         const paidAmount = Math.max(0, Number(tx?.amount) || 0);
         return res.redirect(
-          `${process.env.FRONTEND_URL}/payment-success?bookingId=${booking._id}&orderId=${encodeURIComponent(
+          `${frontendUrl}/payment-success?bookingId=${booking._id}&orderId=${encodeURIComponent(
             orderId,
           )}&resultCode=${encodeURIComponent(String(resultCode ?? 0))}&transId=${encodeURIComponent(
             String(transId ?? ""),
@@ -402,7 +403,7 @@ class MoMoController {
         // Keep pending; cancellation/refund is handled by policy/admin endpoints.
         await booking.save();
         return res.redirect(
-          `${process.env.FRONTEND_URL}/payment-failed?message=${encodeURIComponent(
+          `${frontendUrl}/payment-failed?message=${encodeURIComponent(
             message || "Thanh toán thất bại",
           )}&resultCode=${encodeURIComponent(String(resultCode ?? ""))}&orderId=${encodeURIComponent(
             String(orderId ?? ""),
@@ -413,7 +414,7 @@ class MoMoController {
       console.error("Callback Error:", error);
 
       return res.redirect(
-        `${process.env.FRONTEND_URL}/payment-failed?message=Lỗi server&resultCode=${encodeURIComponent(
+        `${frontendUrl}/payment-failed?message=Lỗi server&resultCode=${encodeURIComponent(
           String(resultCode ?? ""),
         )}`,
       );

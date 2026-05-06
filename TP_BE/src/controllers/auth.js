@@ -116,7 +116,7 @@ export const getProfileUser = (req, res) => {
 // FORGOT PASSWORD
 export const forgotPassword = async (req, res) => {
   try {
-    const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
+    const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5174";
     const email = String(req.body.email || "")
       .trim()
       .toLowerCase();
